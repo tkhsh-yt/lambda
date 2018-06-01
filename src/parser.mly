@@ -1,7 +1,7 @@
 %{ open Ast %}
 
-%token <string> Ident
-%token Lambda Dot LParen RParen End Eof
+%token <string> IDENT
+%token LAMBDA DOT LPAREN RPAREN END EOF
 
 %start main
 %type <Ast.expr list> main
@@ -12,16 +12,16 @@
 %%
 
 main:
-  | exprs=list(expr) Eof { exprs }
+  | exprs=list(expr) EOF { exprs }
 
 main_expr:
   | expr=expr {Some expr}
-  | Eof {None}
+  | EOF {None}
 
 expr:
-  | expr=iexpr End { expr }
+  | expr=iexpr END { expr }
 
 iexpr:
-  | ident=Ident { Ident ident }
-  | LParen Lambda ident=Ident Dot expr=iexpr RParen { Lambda (ident, expr) }
-  | LParen expl=iexpr expr=iexpr RParen { Abst (expl, expr) }
+  | ident=IDENT { Ident ident }
+  | LPAREN LAMBDA ident=IDENT DOT expr=iexpr RPAREN { Lambda (ident, expr) }
+  | LPAREN expl=iexpr expr=iexpr RPAREN { Abst (expl, expr) }

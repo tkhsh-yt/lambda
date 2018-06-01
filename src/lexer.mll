@@ -1,4 +1,5 @@
 {
+  open Token
   open Lexing
   open Parser
 
@@ -15,6 +16,7 @@ rule token = parse
 | ')'    { RPAREN }
 | '.'    { DOT }
 | '\\'   { LAMBDA }
+| ';'    { END }
 | space+ { token lexbuf }
 | eof    { EOF }
 | _
