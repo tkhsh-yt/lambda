@@ -1,0 +1,26 @@
+OASISFormat: 0.4
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools:  ocamlbuild
+
+AlphaFeatures: ocamlbuild_more_args
+XOCamlbuildExtraArgs: "-use-menhir -no-hygiene"
+
+Name:     lambda
+Version:  0.1
+Synopsis: lambda
+Authors:  Yuta Takahashi
+License:  MIT
+
+Library lambda
+  Path:            src
+  InternalModules: Parser
+  Modules:         Ast, Syntax
+  CompiledObject:  best
+  BuildDepends:
+    sedlex, menhirLib, ppx_deriving.show
+
+Executable lambda
+  Path:           src
+  MainIs:         main.ml
+  CompiledObject: best
+  BuildDepends:   lambda
