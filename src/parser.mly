@@ -4,10 +4,10 @@
 %token LAMBDA DOT LPAREN RPAREN END EOF
 
 %start main
-%type <Ast.expr list> main
+%type <string Ast.expr list> main
 
 %start main_expr
-%type <Ast.expr option> main_expr
+%type <string Ast.expr option> main_expr
 
 %%
 

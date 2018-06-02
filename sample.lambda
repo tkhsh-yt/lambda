@@ -1,6 +1,6 @@
 x;
 (x x);
-(\x. x y z);
+(\x.x y z);
 (x y z);
 x y z;
 ((\x. ((x x) x)) (\y. y));

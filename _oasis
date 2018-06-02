@@ -17,7 +17,7 @@ Library lambda
   Modules:         Ast, Lexer, Token
   CompiledObject:  best
   BuildDepends:
-    menhirLib, ppx_deriving.show
+    menhirLib
 
 Executable lambda
   Path:           src
