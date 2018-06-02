@@ -12,16 +12,20 @@
 %%
 
 main:
-  | exprs=list(expr) EOF { exprs }
+  | stmts=list(stmt) EOF { stmts }
 
 main_expr:
-  | expr=expr {Some expr}
-  | EOF {None}
+  | stmt=stmt { Some stmt }
+  | EOF { None }
+
+stmt:
+  | expr=expr END { expr }
 
 expr:
-  | expr=iexpr END { expr }
+  | term=term { term }
+  | expl=expr expr=term { Apply (expl, expr) }
 
-iexpr:
+term:
   | ident=IDENT { Ident ident }
-  | LPAREN LAMBDA ident=IDENT DOT expr=iexpr RPAREN { Lambda (ident, expr) }
-  | LPAREN expl=iexpr expr=iexpr RPAREN { Abst (expl, expr) }
+  | LAMBDA ident=IDENT DOT expr=expr { Abst (ident, expr) }
+  | LPAREN expr=expr RPAREN { expr }

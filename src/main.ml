@@ -6,10 +6,15 @@ let interpret file =
   try
     let rec parse () =
       let res = Parser.main Lexer.token lexbuf in
-      List.iter (fun s -> print_string (show_expr s); print_newline ()) res in
+      List.iter (fun s -> print_endline (show_expr s)) res in
     parse ()
   with
+  (* | SyntaxError msg ->
+   *    print_endline msg;
+   *    exit 1; *)
   | Parser.Error ->
+     print_string "Error";
+     print_newline ();
      exit 1
 
 let help () = print_string "lambda <file>\n"

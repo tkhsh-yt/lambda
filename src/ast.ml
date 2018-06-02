@@ -2,6 +2,6 @@ type ident = string [@@deriving show]
 
 type expr =
   | Ident of ident
-  | Lambda of ident * expr
-  | Abst of expr * expr
+  | Abst of ident * expr
+  | Apply of expr * expr
 [@@deriving show]

@@ -1,0 +1,26 @@
+# OASIS_START
+# DO NOT EDIT (digest: 1cc738a85b0201edc130fadd200c09fd)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+true: annot, bin_annot
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library lambda
+"src/lambda.cmxs": use_lambda
+# Executable lambda
+<src/main.{native,byte}>: pkg_menhirLib
+<src/main.{native,byte}>: pkg_ppx_deriving.show
+<src/main.{native,byte}>: use_lambda
+<src/*.ml{,i,y}>: pkg_menhirLib
+<src/*.ml{,i,y}>: pkg_ppx_deriving.show
+<src/*.ml{,i,y}>: use_lambda
+# OASIS_STOP
