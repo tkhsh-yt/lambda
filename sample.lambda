@@ -7,3 +7,8 @@ x y z;
 (\x. x x x) \y. y;
 \x y. x y;
 \f x. x;
+\f x. f x;
+\n f x. f (n f x);
+\m n f. m (n f);
+\n f x. n (\g h. h (g f) (\u. x) (\u. u));
+\s b f. f s b;
