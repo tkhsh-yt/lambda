@@ -27,5 +27,12 @@ expr:
 
 term:
   | ident=IDENT { Ident ident }
-  | LAMBDA ident=IDENT DOT expr=expr { Abst (ident, expr) }
+  | LAMBDA ident=IDENT rest=list(IDENT) DOT expr=expr
+    {
+      let lambda = List.fold_left (fun acc x ->
+                                    fun body -> acc (Abst (x, body)))
+                                  (fun body -> Abst (ident, body))
+                                  rest
+      in lambda expr
+    }
   | LPAREN expr=expr RPAREN { expr }
