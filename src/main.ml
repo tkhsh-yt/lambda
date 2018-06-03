@@ -2,10 +2,10 @@ open Ast
 
 let interpret file =
   let ic = open_in file in
-  let lexbuf = Lexing.from_channel ic in
+  let lexbuf = Syntax.create_lexbuf @@ Sedlexing.Utf8.from_channel ic in
   try
     let rec parse () =
-      let res = Parser.main Lexer.token lexbuf in
+      let res = Syntax.parse_program lexbuf in
       List.iter (fun s -> print_endline (show_expr s)) res in
     parse ()
   with

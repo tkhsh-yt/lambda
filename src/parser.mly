@@ -1,38 +1,67 @@
-%{ open Ast %}
+%{
+    open Ast
 
-%token <string> IDENT
-%token LAMBDA DOT LPAREN RPAREN END EOF
+
+    let merge_info linfo rinfo =
+      {
+        lnum_start = linfo.lnum_start;
+        lnum_end   = rinfo.lnum_end;
+        pos_bol    = linfo.pos_bol;
+        pos_cnum   = rinfo.pos_cnum;
+      }
+
+    let make_abs x body =
+      let (linfo, var) = x in
+      let rinfo = Ast.get_info body in
+      let info = merge_info linfo rinfo in
+      Abs (info, Var (linfo, var), body)
+%}
+
+%token <Ast.info * string> VAR
+%token <Ast.info> LPAREN RPAREN LAMBDA END
+%token DOT EOF
 
 %start main
-%type <string Ast.expr list> main
+%type <Ast.expr list> main
 
-%start main_expr
-%type <string Ast.expr option> main_expr
+%start main_stmt
+%type <Ast.expr option> main_stmt
 
 %%
 
 main:
-  | stmts=list(stmt) EOF { stmts }
+  | list(stmt) EOF { $1 }
 
-main_expr:
-  | stmt=stmt { Some stmt }
-  | EOF { None }
+main_stmt:
+  | stmt { Some $1 }
+  | EOF  { None }
 
 stmt:
-  | expr=expr END { expr }
+  | expr END { $1 }
 
 expr:
-  | term=term { term }
-  | expl=expr expr=term { Apply (expl, expr) }
+  | term { $1 }
+  | expr term
+    {
+      let linfo = Ast.get_info $1 in
+      let rinfo = Ast.get_info $2 in
+      let info = merge_info linfo rinfo in
+      App (info, $1, $2)
+    }
 
 term:
-  | ident=IDENT { Ident ident }
-  | LAMBDA ident=IDENT rest=list(IDENT) DOT expr=expr
+  | VAR
     {
-      let lambda = List.fold_left (fun acc x ->
-                                    fun body -> acc (Abst (x, body)))
-                                  (fun body -> Abst (ident, body))
-                                  rest
-      in lambda expr
+      let (info, var) = $1 in
+      Var (info, var)
     }
-  | LPAREN expr=expr RPAREN { expr }
+  | LAMBDA VAR list(VAR) DOT expr
+    {
+      let lambda = List.fold_left
+                     (fun acc x ->
+                       fun body -> acc (make_abs x body))
+                     (fun body -> make_abs $2 body)
+                     $3
+      in lambda $5
+    }
+  | LPAREN expr RPAREN { $2 }
