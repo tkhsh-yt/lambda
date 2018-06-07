@@ -64,13 +64,13 @@ let exp_var_initial = [%sedlex.regexp? 'a'..'z']
 
 let exp_var_rest = [%sedlex.regexp? exp_var_initial | '_']
 
-let exp_var = [%sedlex.regexp? exp_var_initial, Star exp_var_rest]
+let exp_var = [%sedlex.regexp? exp_var_initial, Star exp_var_rest, Opt '\'']
 
 let exp_name_initial = [%sedlex.regexp? 'A'..'Z']
 
 let exp_name_rest = [%sedlex.regexp? exp_name_initial | '_']
 
-let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest]
+let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest, Opt '\'']
 
 let rec lex lexbuf =
   let buf = lexbuf.stream in

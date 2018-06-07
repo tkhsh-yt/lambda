@@ -1,7 +1,7 @@
 open Tm
 
 let rec subst x s = function
-  | Var(x') -> if x' = x then s else Var(x')
+  | Var(x', id) -> if (x', id) = x then s else Var(x', id)
   | Abs(x', e) -> Abs(x', subst x s e)
   | App(e1, e2) -> App(subst x s e1, subst x s e2)
   | _ -> failwith ""
@@ -10,11 +10,11 @@ let find x env = try M.find x env with
                    Not_found -> failwith ("not found: " ^ x)
 
 let rec eval_in env = function
-  | Var(x) ->
-     (Var(x), env)
+  | Var(x, id) ->
+     (Var(x, id), env)
   | Name(x) -> begin
-      let (e', env') = eval_in env (find x env) in
-      (e', env)
+      let (e', _) = eval_in env (find x env) in
+      (Alpha.alpha M.empty e', env)
     end
   | Abs(v, e) ->
      let (e', _) = eval_in env e in

@@ -1,13 +1,15 @@
 open Tm
 
-let find x env = try M.find x env with Not_found -> x
+let find x env = try M.find x env with
+                   Not_found -> (x, 0)
 
 let rec alpha env = function
-  | Var(x) ->
-     Var(find x env)
+  | Var(x, id) ->
+     let (x', id) = find x env in
+     Var(x', id)
   | Name(n) ->
      Name(n)
-  | Abs(x, e) ->
+  | Abs((x, _), e) ->
      let x' = Id.genid x in
      Abs(x', alpha (M.add x x' env) e)
   | App(e1, e2) ->

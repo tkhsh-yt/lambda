@@ -1,4 +1,4 @@
-let counter = ref 0
+let counter = ref 1
 let genid s =
   incr counter;
-  Printf.sprintf "%s#%d" s !counter
+  (s, !counter)
