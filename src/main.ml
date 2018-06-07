@@ -7,7 +7,7 @@ let interpret file =
     let rec parse () =
       let exprs = Syntax.parse_program lexbuf in
       let terms = List.map (fun e -> Tm.from_ast e) exprs in
-      let alpha = List.map (fun e -> Alpha.conv e) terms in
+      let alpha = List.map (fun e -> Alpha.alpha e) terms in
       let (eval, _) = List.fold_left
                         (fun t e ->
                           let (acc, env) = t in

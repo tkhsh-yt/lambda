@@ -13,8 +13,8 @@ let rec eval_in env = function
   | Var(x, id) ->
      (Var(x, id), env)
   | Name(x) -> begin
-      let (e', _) = eval_in env (find x env) in
-      (Alpha.alpha M.empty e', env)
+      let (e', _) = eval_in env (Alpha.alpha (find x env)) in
+      (e', env)
     end
   | Abs(v, e) ->
      let (e', _) = eval_in env e in
