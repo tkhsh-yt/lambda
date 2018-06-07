@@ -51,8 +51,6 @@ let string_of_ParseError (file, line, cnum, tok) =
     line cnum tok
 
 let pos_to_info lexbuf =
-  let tok = lexeme lexbuf in
-  let col = lexbuf.pos.pos_cnum - lexbuf.pos.pos_bol in
   {
     lnum_start = lexbuf.pos.pos_lnum;
     lnum_end   = lexbuf.pos.pos_lnum;

@@ -5,11 +5,9 @@ type info = {
     pos_cnum  : int;
   } [@@deriving show]
 
-type ident = string
-
 type expr =
-  | Var of  info * string
-  | Abs of info * expr * expr
+  | Var of info * string
+  | Abs of info * (info * string) * expr
   | App of info * expr * expr
 [@@deriving show]
 
@@ -18,8 +16,7 @@ let get_info = function
   | Abs (info, _, _) -> info
   | App (info, _, _) -> info
 
-let rec pretty_show_expr = function
-  | Var (_, var) -> var
-  | Abs (_, Var(_, ident), expr) -> "(λ" ^ ident ^ "." ^ show_expr expr ^ ")"
-  | App (_, expl, expr) -> "(" ^ show_expr expl ^ " " ^ show_expr expr ^ ")"
-  | _ ->  failwith "undefined"
+let rec show_pretty_expr = function
+  | Var(_, x) -> x
+  | Abs(_, (_, x), e) -> "(λ" ^ x ^ "." ^ show_pretty_expr e ^ ")"
+  | App(_, e1, e2) -> "(" ^ show_pretty_expr e1 ^ " " ^ show_pretty_expr e2 ^ ")"

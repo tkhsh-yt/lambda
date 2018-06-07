@@ -5,8 +5,11 @@ let interpret file =
   let lexbuf = Syntax.create_lexbuf @@ Sedlexing.Utf8.from_channel ic in
   try
     let rec parse () =
-      let res = Syntax.parse_program lexbuf in
-      List.iter (fun s -> print_endline (show_expr s)) res in
+      let exprs = Syntax.parse_program lexbuf in
+      let terms = List.map (fun e -> Tm.from_ast e) exprs in
+      let alpha = List.map (fun e -> Alpha.conv e) terms in
+      let eval = List.map (fun e -> Tm.eval e) alpha in
+      List.iter (fun e -> print_endline (Tm.show_pretty_term e)) eval in
     parse ()
   with
   (* | SyntaxError msg ->

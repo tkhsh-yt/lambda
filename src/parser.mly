@@ -14,7 +14,7 @@
       let (linfo, var) = x in
       let rinfo = Ast.get_info body in
       let info = merge_info linfo rinfo in
-      Abs (info, Var (linfo, var), body)
+      Abs (info, (linfo, var), body)
 %}
 
 %token <Ast.info * string> VAR
