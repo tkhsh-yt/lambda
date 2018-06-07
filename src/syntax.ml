@@ -66,6 +66,12 @@ let exp_var_rest = [%sedlex.regexp? exp_var_initial | '_']
 
 let exp_var = [%sedlex.regexp? exp_var_initial, Star exp_var_rest]
 
+let exp_name_initial = [%sedlex.regexp? 'A'..'Z']
+
+let exp_name_rest = [%sedlex.regexp? exp_name_initial | '_']
+
+let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest]
+
 let rec lex lexbuf =
   let buf = lexbuf.stream in
   match%sedlex buf with
@@ -77,6 +83,14 @@ let rec lex lexbuf =
   | white_space ->
      update lexbuf;
      lex lexbuf
+
+  | ":=" ->
+     update lexbuf;
+     Parser.DEFINE
+
+  | exp_name ->
+     update lexbuf;
+     Parser.NAME(pos_to_info lexbuf, lexeme lexbuf)
 
   | '\\' ->
      update lexbuf;

@@ -14,10 +14,10 @@ License:  MIT
 Library lambda
   Path:            src
   InternalModules: Parser
-  Modules:         Ast, Syntax, M, Alpha, Tm
+  Modules:         Ast, Syntax, M, Alpha, Tm, Eval
   CompiledObject:  best
   BuildDepends:
-    menhirLib, sedlex, ppx_deriving.show
+    menhirLib, sedlex, ppx_deriving.show, ppx_deriving.eq, ppx_deriving.ord
 
 Executable lambda
   Path:           src

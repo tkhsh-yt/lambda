@@ -8,8 +8,15 @@ let interpret file =
       let exprs = Syntax.parse_program lexbuf in
       let terms = List.map (fun e -> Tm.from_ast e) exprs in
       let alpha = List.map (fun e -> Alpha.conv e) terms in
-      let eval = List.map (fun e -> Tm.eval e) alpha in
-      List.iter (fun e -> print_endline (Tm.show_pretty_term e)) eval in
+      let (eval, _) = List.fold_left
+                        (fun t e ->
+                          let (acc, env) = t in
+                          let (e', env') = Eval.eval_in env e in
+                          (e' :: acc, env'))
+                        ([], M.empty)
+                        alpha
+      in
+      List.iter (fun e -> print_endline (Tm.show_pretty_term e)) (List.rev eval) in
     parse ()
   with
   (* | SyntaxError msg ->

@@ -17,9 +17,9 @@
       Abs (info, (linfo, var), body)
 %}
 
-%token <Ast.info * string> VAR
+%token <Ast.info * string> VAR NAME
 %token <Ast.info> LPAREN RPAREN LAMBDA END
-%token DOT EOF
+%token DOT EOF DEFINE
 
 %start main
 %type <Ast.expr list> main
@@ -37,6 +37,12 @@ main_stmt:
   | EOF  { None }
 
 stmt:
+  | NAME DEFINE expr END
+    {
+      let (linfo, n) = $1 in
+      let info = merge_info linfo $4 in
+      Assign(info, n, $3)
+    }
   | expr END { $1 }
 
 expr:
@@ -54,6 +60,11 @@ term:
     {
       let (info, var) = $1 in
       Var (info, var)
+    }
+  | NAME
+    {
+      let (info, var) = $1 in
+      Name(info, var)
     }
   | LAMBDA VAR list(VAR) DOT expr
     {
