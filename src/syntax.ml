@@ -72,7 +72,7 @@ let exp_name_rest = [%sedlex.regexp? exp_name_initial | '_']
 
 let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest, Opt '\'']
 
-let comment = [%sedlex.regexp? "--", Star (Compl '\n'), '\n']
+let comment = [%sedlex.regexp? "--", Star (Compl '\n'), ('\n' | eof)]
 
 let rec lex lexbuf =
   let buf = lexbuf.stream in
