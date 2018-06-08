@@ -1,0 +1,38 @@
+-- SKI Combinator
+
+S := \x y z. x z (y z);
+K := \x y. x;
+I := \x. x;
+
+(S K K) x;
+
+(S (K (S I)) (S (K K) I));
+
+(S (K (S I)) (S (K K) I) x y);
+
+B := \f g x. f (g x);
+C := \f x y. f y x;
+
+(C I x y);
+
+(S I I a);
+
+-- Booleans
+
+T := K;
+F := S K;
+
+NOT := S (S I (K F)) (K T);
+
+NOT T;
+NOT F;
+
+OR := S I (K T);
+
+OR T F;
+OR F F;
+
+AND := S S (K (K F));
+
+AND T T;
+AND F T;
