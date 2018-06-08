@@ -1,11 +1,31 @@
+-- Church Booleans
+
 TRUE := \x y. x;
 FALSE := \x y. y;
 
 AND := \p q. p q FALSE;
-OR := \p. p FALSE TRUE;
-IFTHENELSE := \p x y. p x y;
+OR := \p q. p TRUE q;
+NOT := \p x y. p y x;
+NOT' := \p. p FALSE TRUE;
+XOR := \x y. x (NOT y) y;
+IF := \p x y. p x y;
 
 AND TRUE FALSE;
+
+OR TRUE FALSE;
+OR FALSE FALSE;
+
+NOT TRUE;
+NOT' TRUE;
+NOT FALSE;
+NOT' FALSE;
+
+XOR TRUE FALSE;
+XOR TRUE TRUE;
+XOR FALSE FALSE;
+
+IF FALSE a b;
+IF TRUE a b;
 
 ISZERO := \n. n (\x. FALSE) TRUE;
 

@@ -1,0 +1,17 @@
+-- Church List encoding (One pair as a list node)
+
+TRUE := \x y. x;
+FALSE := \x y. y;
+
+PAIR := \x y z. z x y;
+FIRST := \p. p (\x y. x);
+SECOND := \p. p (\x y. y);
+
+CONS := PAIR;
+HEAD := FIRST;
+TAIL := SECOND;
+NIL := FALSE;
+ISNIL := \l. l (\h t d. FALSE) TRUE;
+
+ISNIL NIL;
+ISNIL (CONS a NIL);
