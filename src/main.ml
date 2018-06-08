@@ -12,11 +12,19 @@ let interpret file =
                         (fun t e ->
                           let (acc, env) = t in
                           let (e', env') = Eval.eval_in env e in
-                          (e' :: acc, env'))
+                          ((e, e') :: acc, env'))
                         ([], M.empty)
                         alpha
       in
-      List.iter (fun e -> print_endline (Tm.show_pretty_term e)) (List.rev eval) in
+      List.iter (fun t ->
+          let (e, e') = t in
+          print_endline (Tm.show_pretty_term e);
+          print_string "=> ";
+          print_endline (Tm.show_pretty_term e');
+          print_newline ();
+        )
+        (List.rev eval)
+    in
     parse ()
   with
   (* | SyntaxError msg ->
