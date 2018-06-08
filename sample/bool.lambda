@@ -1,0 +1,15 @@
+TRUE := \x y. x;
+FALSE := \x y. y;
+
+AND := \p q. p q FALSE;
+OR := \p. p FALSE TRUE;
+IFTHENELSE := \p x y. p x y;
+
+AND TRUE FALSE;
+
+ISZERO := \n. n (\x. FALSE) TRUE;
+
+ZERO := \f x. x;
+ONE := \f x. f x;
+ISZERO ZERO;
+ISZERO ONE;

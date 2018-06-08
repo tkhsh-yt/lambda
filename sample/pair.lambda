@@ -1,0 +1,16 @@
+PAIR := \x y z. z x y;
+FIRST := \p. p (\x y. x);
+SECOND := \p. p (\x y. y);
+
+FIRST (PAIR a b);
+
+TRUE := \x y. x;
+FALSE := \x y. y;
+
+NIL := PAIR TRUE TRUE;
+CONS := \h t. PAIR FALSE (PAIR h t);
+HEAD := \z. FIRST (SECOND z);
+TAIL := \z. SECOND (SECOND z);
+
+CONS a NIL;
+HEAD (CONS a NIL);
