@@ -36,3 +36,47 @@ AND := S S (K (K F));
 
 AND T T;
 AND F T;
+
+IF := S T F;
+
+IF T a b;
+IF F a b;
+
+-- Y combinator
+
+Y := S (K (S I I)) (S (S (K S) K) (K (S I I)));
+
+-- Church
+
+ZERO := K I;
+ONE := I;
+TWO := S B I;
+THREE := S B (S B I);
+
+ZERO;
+ONE;
+TWO;
+THREE;
+
+SUCC := S B;
+
+SUCC ZERO;
+SUCC ONE;
+SUCC TWO;
+
+PLUS := S I (K SUCC);
+
+PLUS ONE TWO;
+PLUS TWO TWO;
+
+MUL := S (S (K S) (S (K (S I)) (S (K K) PLUS))) (K (K ZERO));
+
+MUL ONE TWO;
+MUL TWO TWO;
+MUL TWO THREE;
+
+ISZERO := S ((S I) (K (K (K I)))) (K K);
+
+ISZERO ZERO;
+ISZERO ONE;
+ISZERO TWO;
