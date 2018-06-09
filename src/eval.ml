@@ -4,10 +4,10 @@ let rec subst x s = function
   | Var(x', id) -> if (x', id) = x then s else Var(x', id)
   | Abs(x', e) -> Abs(x', subst x s e)
   | App(e1, e2) -> App(subst x s e1, subst x s e2)
-  | _ -> failwith ""
+  | _ -> failwith "unreachable code"
 
 let find x env = try M.find x env with
-                   Not_found -> failwith ("not found: " ^ x)
+                   Not_found -> failwith ("not found NAME: " ^ x)
 
 let rec eval_in env = function
   | Var(x, id) ->
@@ -27,7 +27,7 @@ let rec eval_in env = function
       | Abs(x, e') ->
          eval_in env (subst x e2' e')
       | App(_, _) -> (App(e1', e2'), env)
-      | _ -> failwith ""
+      | _ -> failwith "unreachable code"
     end
   | Assign(n, e) ->
      (Assign(n, e), M.add n e env)

@@ -33,13 +33,6 @@ let lexeme {stream} = Sedlexing.Utf8.lexeme stream
 (** [ParseError (file, line, col, token)] *)
 exception ParseError of (string * int * int * string)
 
-let raise_ParseError lexbuf =
-  let {pos} = lexbuf in
-  let line = pos.pos_lnum in
-  let col = pos.pos_cnum - pos.pos_bol in
-  let tok = lexeme lexbuf in
-  raise @@ ParseError (pos.pos_fname, line, col, tok)
-
 let string_of_ParseError (file, line, cnum, tok) =
   let file_to_string file =
     if file = "" then ""
@@ -49,6 +42,13 @@ let string_of_ParseError (file, line, cnum, tok) =
     "Parse error%s line %i, column %i, token %s"
     (file_to_string file)
     line cnum tok
+
+let raise_ParseError lexbuf =
+  let {pos} = lexbuf in
+  let line = pos.pos_lnum in
+  let col = pos.pos_cnum - pos.pos_bol in
+  let tok = lexeme lexbuf in
+  raise @@ ParseError (pos.pos_fname, line, col, tok)
 
 let pos_to_info lexbuf =
   {
@@ -64,13 +64,13 @@ let exp_var_initial = [%sedlex.regexp? 'a'..'z']
 
 let exp_var_rest = [%sedlex.regexp? exp_var_initial | '_']
 
-let exp_var = [%sedlex.regexp? exp_var_initial, Star exp_var_rest, Opt '\'']
+let exp_var = [%sedlex.regexp? exp_var_initial, Star exp_var_rest, Star '\'']
 
 let exp_name_initial = [%sedlex.regexp? 'A'..'Z']
 
 let exp_name_rest = [%sedlex.regexp? exp_name_initial | '_']
 
-let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest, Opt '\'']
+let exp_name = [%sedlex.regexp? exp_name_initial, Star exp_name_rest, Star '\'']
 
 let comment = [%sedlex.regexp? "--", Star (Compl '\n'), ('\n' | eof)]
 
