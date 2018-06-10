@@ -5,13 +5,13 @@ let interpret file =
   let lexbuf = Syntax.create_lexbuf @@ Sedlexing.Utf8.from_channel ic in
   try
     let rec parse () =
-      let (eval, _) = Syntax.parse_program lexbuf
+      let (vs, _) = Syntax.parse_program lexbuf
                       |> List.map (fun e -> Tm.from_ast e)
-                      |> List.map (fun e -> Alpha.alpha e)
+                      |> List.map (fun e -> Alpha.conv e)
                       |> List.fold_left
                            (fun t e ->
                              let (acc, env) = t in
-                             let (e', env') = Eval.eval_in env e in
+                             let (e', env') = Beta.reduct_in env e in
                              ((e, e') :: acc, env'))
                            ([], M.empty)
       in
@@ -20,9 +20,9 @@ let interpret file =
           print_endline (Tm.show_pretty_term e);
           print_string "=> ";
           print_endline (Tm.show_pretty_term e');
-          print_newline ();
+          print_newline ()
         )
-        (List.rev eval)
+        (List.rev vs)
     in
     parse ()
   with

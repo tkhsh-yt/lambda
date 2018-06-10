@@ -9,27 +9,27 @@ let rec subst x s = function
 let find x env = try M.find x env with
                    Not_found -> failwith ("not found NAME: " ^ x)
 
-let rec eval_in env = function
+let rec reduct_in env = function
   | Var(x, id) ->
      (Var(x, id), env)
   | Name(x) -> begin
-      let (e', _) = eval_in env (Alpha.alpha (find x env)) in
+      let (e', _) = reduct_in env (Alpha.conv (find x env)) in
       (e', env)
     end
   | Abs(v, e) ->
-     let (e', _) = eval_in env e in
+     let (e', _) = reduct_in env e in
      (Abs(v, e'), env)
   | App(e1, e2) -> begin
-      let (e2', _) = eval_in env e2 in
-      let (e1', _) = eval_in env e1 in
+      let (e2', _) = reduct_in env e2 in
+      let (e1', _) = reduct_in env e1 in
       match e1' with
       | Var(_) -> (App(e1', e2'), env)
       | Abs(x, e') ->
-         eval_in env (subst x e2' e')
+         reduct_in env (subst x e2' e')
       | App(_, _) -> (App(e1', e2'), env)
       | _ -> failwith "unreachable code"
     end
   | Assign(n, e) ->
      (Assign(n, e), M.add n e env)
 
-let eval = eval_in M.empty
+let reduct = reduct_in M.empty
