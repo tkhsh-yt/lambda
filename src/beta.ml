@@ -20,8 +20,8 @@ let rec reduct_in env = function
      let (e', _) = reduct_in env e in
      (Abs(v, e'), env)
   | App(e1, e2) -> begin
-      let (e2', _) = reduct_in env e2 in
       let (e1', _) = reduct_in env e1 in
+      let (e2', _) = reduct_in env e2 in
       match e1' with
       | Var(_) -> (App(e1', e2'), env)
       | Abs(x, e') ->
