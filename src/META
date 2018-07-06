@@ -1,8 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9496675e5bb1d3e4104b41ce85b96250)
+# DO NOT EDIT (digest: 010e63640cb482b55029adcc4362510e)
 version = "0.1"
 description = "lambda"
-requires = "menhirLib ppx_deriving.show"
+requires =
+"menhirLib sedlex ppx_deriving.show ppx_deriving.eq ppx_deriving.ord"
 archive(byte) = "lambda.cma"
 archive(byte, plugin) = "lambda.cma"
 archive(native) = "lambda.cmxa"

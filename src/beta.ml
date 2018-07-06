@@ -1,3 +1,4 @@
+open Util
 open Tm
 
 let rec subst x s = function
@@ -7,13 +8,13 @@ let rec subst x s = function
   | _ -> failwith "unreachable code"
 
 let find x env = try M.find x env with
-                   Not_found -> failwith ("not found NAME: " ^ x)
+                   Not_found -> failwith @@ "not found NAME: " ^ x
 
 let rec reduct_in env = function
   | Var(x, id) ->
      (Var(x, id), env)
   | Name(x) -> begin
-      let (e', _) = reduct_in env (Alpha.conv (find x env)) in
+      let (e', _) = reduct_in env (Alpha.conv @@ find x env) in
       (e', env)
     end
   | Abs(v, e) ->
@@ -25,7 +26,7 @@ let rec reduct_in env = function
       match e1' with
       | Var(_) -> (App(e1', e2'), env)
       | Abs(x, e') ->
-         reduct_in env (subst x e2' e')
+         reduct_in env @@ subst x e2' e'
       | App(_, _) -> (App(e1', e2'), env)
       | _ -> failwith "unreachable code"
     end

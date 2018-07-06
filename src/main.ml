@@ -17,9 +17,9 @@ let interpret file =
       in
       List.iter (fun t ->
           let (e, e') = t in
-          print_endline (Tm.show_pretty_term e);
+          print_endline @@ Tm.show_pretty_term e;
           print_string "=> ";
-          print_endline (Tm.show_pretty_term e');
+          print_endline @@ Tm.show_pretty_term e';
           print_newline ()
         )
         (List.rev vs)

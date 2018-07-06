@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1cc738a85b0201edc130fadd200c09fd)
+# DO NOT EDIT (digest: 90b7628d1f46c23a98f50d7f86daa43d)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -18,9 +18,15 @@ true: annot, bin_annot
 "src/lambda.cmxs": use_lambda
 # Executable lambda
 <src/main.{native,byte}>: pkg_menhirLib
+<src/main.{native,byte}>: pkg_ppx_deriving.eq
+<src/main.{native,byte}>: pkg_ppx_deriving.ord
 <src/main.{native,byte}>: pkg_ppx_deriving.show
+<src/main.{native,byte}>: pkg_sedlex
 <src/main.{native,byte}>: use_lambda
 <src/*.ml{,i,y}>: pkg_menhirLib
+<src/*.ml{,i,y}>: pkg_ppx_deriving.eq
+<src/*.ml{,i,y}>: pkg_ppx_deriving.ord
 <src/*.ml{,i,y}>: pkg_ppx_deriving.show
+<src/*.ml{,i,y}>: pkg_sedlex
 <src/*.ml{,i,y}>: use_lambda
 # OASIS_STOP
